@@ -1,0 +1,18 @@
+rules:
+  - name: "Check global scrape interval"
+    check: "global.scrape_interval"
+    severity: "high"
+    message: "Global scrape interval is missing."
+    recommendation: "Set a global scrape interval in your Prometheus configuration."
+
+  - name: "Check alertmanager config"
+    parameter: "alerting.alertmanagers"
+    severity: "medium"
+    message: "Alertmanager configuration is missing."
+    recommendation: "Add alertmanager configuration to your Prometheus setup."
+
+  - name: "Check evaluation interval"
+    check: "global.evaluation_interval"
+    severity: "low"
+    message: "Evaluation interval is missing."
+    recommendation: "Set an evaluation interval in your Prometheus configuration."

@@ -1,0 +1,102 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Prometheus",
+    "type": "object",
+    "properties": {
+        "global": {
+            "type": "object",
+            "properties": {
+                "scrape_interval": {
+                    "type": "string",
+                    "description": "The interval at which to scrape targets",
+                    "level": "info",
+                    "message": "Scrape interval should be set to ensure timely data collection.",
+                    "recommendation": "Set scrape_interval to a value like '15s' or '30s'."
+                }
+            }
+        },
+        "scrape_configs": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "job_name": {
+                        "type": "string"
+                    },
+                    "tls_config": {
+                        "type": "object",
+                        "properties": {
+                            "insecure_skip_verify": {
+                                "type": "boolean",
+                                "description": "If true, the Prometheus instance will skip TLS certificate verification",
+                                "level": "fail",
+                                "message": "TLS certificate verification should not be skipped for security reasons.",
+                                "recommendation": "Set insecure_skip_verify to false."
+                            }
+                        }
+                    },
+                    "basic_auth": {
+                        "type": "object",
+                        "properties": {
+                            "username": {
+                                "type": "string"
+                            },
+                            "password": {
+                                "type": "string"
+                            }
+                        },
+                        "level": "warning",
+                        "message": "Using basic authentication can expose credentials.",
+                        "recommendation": "Consider using more secure methods such as OAuth2 or TLS client certificates."
+                    }
+                },
+                "required": [
+                    "job_name"
+                ]
+            }
+        },
+        "alerting": {
+            "type": "object",
+            "properties": {
+                "alertmanagers": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "scheme": {
+                                "type": "string",
+                                "description": "Scheme for connecting to Alertmanager",
+                                "level": "fail",
+                                "message": "HTTP scheme should not be used; prefer HTTPS for secure communication.",
+                                "recommendation": "Set scheme to 'https'.",
+                                "const": [
+                                    "https"
+                                ]
+                            },
+                            "tls_config": {
+                                "type": "object",
+                                "properties": {
+                                    "insecure_skip_verify": {
+                                        "type": "boolean",
+                                        "const": [
+                                            "false"
+                                        ],
+                                        "description": "If true, the Prometheus instance will skip TLS certificate verification",
+                                        "level": "fail",
+                                        "message": "TLS certificate verification should not be skipped for security reasons.",
+                                        "recommendation": "Set insecure_skip_verify to false."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "required": [
+        "global",
+        "scrape_configs",
+        "alerting"
+    ]
+}
